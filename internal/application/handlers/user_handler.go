@@ -26,17 +26,18 @@ func GetUserByID(c *gin.Context) {
 
 func CreateUser(c *gin.Context) {
 	var u user.User
+	
 	 
 	if err := c.ShouldBindBodyWithJSON((&u)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err := usecase_user.CreateUser(&u, userRepo)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	er := usecase_user.CreateUser(&u, userRepo)
+	if er != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": er.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, u)
+	c.JSON(http.StatusCreated, gin.H{})
 }
