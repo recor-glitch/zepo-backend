@@ -8,6 +8,7 @@ import (
 	"github.com/recor-glitch/zepo-backend/internal/infrastructure/db"
 	"github.com/recor-glitch/zepo-backend/internal/infrastructure/repository"
 	usecase_user "github.com/recor-glitch/zepo-backend/internal/usecase/user"
+	"github.com/recor-glitch/zepo-backend/internal/utils"
 )
 
 var userRepo = repository.NewUserRespository(db.ConnectDB())
@@ -17,7 +18,7 @@ func GetUserByID(c *gin.Context) {
 
 	u, err := usecase_user.GetByID(id, userRepo)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		utils.MapDBError(err, c)
 		return
 	}
 
@@ -26,16 +27,15 @@ func GetUserByID(c *gin.Context) {
 
 func CreateUser(c *gin.Context) {
 	var u user.User
-	
-	 
+
 	if err := c.ShouldBindBodyWithJSON((&u)); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.MapDBError(err, c)
 		return
 	}
 
 	er := usecase_user.CreateUser(&u, userRepo)
 	if er != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": er.Error()})
+		utils.MapDBError(er, c)
 		return
 	}
 
