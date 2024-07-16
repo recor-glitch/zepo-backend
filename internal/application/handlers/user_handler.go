@@ -62,6 +62,11 @@ func InvalidateAccessToken(c *gin.Context) {
 		return
 	}
 
+	if _, er := auth.ValidateAccessToken(tokens.AccessToken); er == nil {	
+	c.JSON(http.StatusCreated, gin.H{"access_token": tokens.AccessToken, "refresh_token": tokens.AccessToken})
+	return
+	}
+
 	claims, err := auth.ValidateRefreshToken(tokens.RefreshToken)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"msg": err.Error(), "statuscode": http.StatusUnauthorized})

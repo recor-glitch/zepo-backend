@@ -8,6 +8,8 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 	// USER ROUTES
+	// INVALIDATE TOKEN
+	r.POST("/invalidate", handlers.InvalidateAccessToken)
 	// CREATE USER
 	r.POST("/user", handlers.CreateUser)
 	authRoute := r.Group("/user")
