@@ -8,3 +8,8 @@ type User struct {
 	Role      string `gorm:"default:user" json:"role"`
 	CreatedAt string `gorm:"type:timestamptz;not null;default:NOW()" json:"created_at"`
 }
+
+type TokenResponse struct {
+	accessToken  string `json:"access_token"`
+	refreshToken string `json:"refresh_token"`
+}

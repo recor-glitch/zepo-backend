@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/recor-glitch/zepo-backend/internal/auth"
 	"github.com/recor-glitch/zepo-backend/internal/domain/user"
 	"github.com/recor-glitch/zepo-backend/internal/infrastructure/db"
 	"github.com/recor-glitch/zepo-backend/internal/infrastructure/repository"
@@ -39,5 +40,17 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{})
+	access_token, acc_err := auth.GenerateAccessToken(u.Id)
+	if acc_err != nil {
+		utils.MapDBError(acc_err, c)
+		return
+	}
+
+	refresh_token, ref_err := auth.GenerateRefreshToken(u.Id)
+	if ref_err != nil {
+		utils.MapDBError(ref_err, c)
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"access_token": access_token, "refresh_token": refresh_token})
 }

@@ -28,6 +28,5 @@ func (r *UserRepository) Create(u *user.User) error {
 	// CREATE USER
 	create_query := `INSERT INTO users (id, name, email, image, role) VALUES ($1, $2, $3, $4, $5)`
 	_, err := r.DB.Exec(create_query, u.Id, u.Name, u.Email, u.Image, u.Role)
-
 	return err
 }

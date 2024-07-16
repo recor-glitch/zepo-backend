@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/lib/pq"
 	"github.com/recor-glitch/zepo-backend/internal/domain"
 	"gorm.io/gorm"
 )
@@ -21,9 +21,8 @@ func MapDBError(err error, c *gin.Context) {
 		return
 	}
 
-	if pgErr, ok := err.(*pgconn.PgError); ok {
-		switch pgErr.Code {
-		// duplicate key value violates unique constraint "uni_users_email" (SQLSTATE 23505)
+	if pqErr, ok := err.(*pq.Error); ok {
+		switch pqErr.Code {
 		case "23505":
 			c.JSON(http.StatusBadGateway, gin.H{"msg": domain.ErrDuplicateEntry.Error(), "statusCode": http.StatusBadGateway})
 		default:
