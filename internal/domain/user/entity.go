@@ -9,7 +9,7 @@ type User struct {
 	CreatedAt string `gorm:"type:timestamptz;not null;default:NOW()" json:"created_at"`
 }
 
-type TokenResponse struct {
-	accessToken  string `json:"access_token"`
-	refreshToken string `json:"refresh_token"`
+type Tokens struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }

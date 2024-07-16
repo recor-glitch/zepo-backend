@@ -54,3 +54,25 @@ func CreateUser(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"access_token": access_token, "refresh_token": refresh_token})
 }
+
+func InvalidateAccessToken(c *gin.Context) {
+	var tokens user.Tokens
+	if err := c.ShouldBindBodyWithJSON(&tokens); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error(), "statuscode": http.StatusBadRequest})
+		return
+	}
+
+	claims, err := auth.ValidateRefreshToken(tokens.RefreshToken)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"msg": err.Error(), "statuscode": http.StatusUnauthorized})
+		return
+	}
+
+	access_token, acc_err := auth.GenerateAccessToken(claims.ID)
+	if acc_err != nil {
+		utils.MapDBError(acc_err, c)
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"access_token": access_token, "refresh_token": tokens.AccessToken})
+}
