@@ -52,7 +52,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"access_token": access_token, "refresh_token": refresh_token})
+	c.JSON(http.StatusCreated, gin.H{"accessToken": access_token, "refreshToken": refresh_token})
 }
 
 func InvalidateAccessToken(c *gin.Context) {
@@ -62,9 +62,9 @@ func InvalidateAccessToken(c *gin.Context) {
 		return
 	}
 
-	if _, er := auth.ValidateAccessToken(tokens.AccessToken); er == nil {	
-	c.JSON(http.StatusCreated, gin.H{"access_token": tokens.AccessToken, "refresh_token": tokens.AccessToken})
-	return
+	if _, er := auth.ValidateAccessToken(tokens.AccessToken); er == nil {
+		c.JSON(http.StatusCreated, gin.H{"accessToken": tokens.AccessToken, "refreshToken": tokens.RefreshToken})
+		return
 	}
 
 	claims, err := auth.ValidateRefreshToken(tokens.RefreshToken)
@@ -79,5 +79,5 @@ func InvalidateAccessToken(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"access_token": access_token, "refresh_token": tokens.AccessToken})
+	c.JSON(http.StatusCreated, gin.H{"accessToken": access_token, "refreshToken": tokens.RefreshToken})
 }
