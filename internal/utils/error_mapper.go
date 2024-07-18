@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,8 @@ func MapDBError(err error, c *gin.Context) {
 	}
 
 	if pqErr, ok := err.(*pq.Error); ok {
+		fmt.Printf("%+v", pqErr)
+
 		switch pqErr.Code {
 		case "23505":
 			c.JSON(http.StatusBadGateway, gin.H{"msg": domain.ErrDuplicateEntry.Error(), "statusCode": http.StatusBadGateway})
