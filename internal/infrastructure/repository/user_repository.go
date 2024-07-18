@@ -29,6 +29,7 @@ func (r *UserRepository) GetUserByEmail(email string) (*user.User, error) {
 	query := `SELECT id, name, email, created_at, image, role FROM users WHERE email=$1`
 	err := r.DB.QueryRow(query, email).Scan(&u.Id, &u.Name, &u.Email, &u.CreatedAt, &u.Image, &u.Role)
 	if err != nil {
+		println(err)
 		return nil, err
 	}
 	return &u, nil

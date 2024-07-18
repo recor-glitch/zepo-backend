@@ -5,6 +5,6 @@ import (
 	"github.com/recor-glitch/zepo-backend/internal/infrastructure/repository"
 )
 
-func GetByID(id string, repo *repository.UserRepository) (*user.User, error) {
-	return repo.GetByID(id)
+func GetUserByEmail(email string, repo *repository.UserRepository) (*user.User, error) {
+	return repo.GetUserByEmail(email)
 }

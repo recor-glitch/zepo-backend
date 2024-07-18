@@ -18,7 +18,26 @@ var userRepo = repository.NewUserRespository(db.ConnectDB())
 func GetUserByID(c *gin.Context) {
 	id := c.Param("id")
 
-	u, err := usecase_user.GetByID(id, userRepo)
+	u, err := usecase_user.GetUserById(id, userRepo)
+	if err != nil {
+		utils.MapDBError(err, c)
+		return
+	}
+
+	c.JSON(http.StatusOK, u)
+}
+
+func GetUserByEmail(c *gin.Context) {
+	var requestBody struct {
+		Email string `json:"email" binding:"required"`
+	}
+
+	if er := c.BindJSON(&requestBody); er != nil {
+		c.JSON(http.StatusBadGateway, gin.H{"msg": "Invalid request body", "statusCode": http.StatusBadGateway})
+		return
+	}
+
+	u, err := usecase_user.GetUserByEmail(requestBody.Email, userRepo)
 	if err != nil {
 		utils.MapDBError(err, c)
 		return

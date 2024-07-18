@@ -17,4 +17,5 @@ func SetupRoutes(r *gin.Engine) {
 	authRoute.Use(middleware.JWTAuth())
 
 	authRoute.GET("/:id", handlers.GetUserByID)
+	authRoute.POST("/get-by-email", handlers.GetUserByEmail)
 }
