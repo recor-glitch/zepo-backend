@@ -12,10 +12,10 @@ func SetupRoutes(r *gin.Engine) {
 	r.POST("/invalidate", handlers.InvalidateAccessToken)
 	// CREATE USER
 	r.POST("/user", handlers.CreateUser)
+	r.POST("/get-by-email", handlers.GetUserByEmail)
 	authRoute := r.Group("/user")
 
 	authRoute.Use(middleware.JWTAuth())
 
 	authRoute.GET("/:id", handlers.GetUserByID)
-	authRoute.POST("/get-by-email", handlers.GetUserByEmail)
 }
