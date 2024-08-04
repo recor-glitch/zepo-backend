@@ -16,7 +16,7 @@ func NewUserRespository(db *sql.DB) *UserRepository {
 
 func (r *UserRepository) GetByID(id string) (*user.User, error) {
 	var u user.User
-	query := `SELECT id, name, email, created_at, image, role FROM users WHERE id=$1`
+	query := `SELECT id, name, email, createdat, image, role FROM users WHERE id=$1`
 	err := r.DB.QueryRow(query, id).Scan(&u.Id, &u.Name, &u.Email, &u.CreatedAt, &u.Image, &u.Role)
 	if err != nil {
 		return nil, err
@@ -26,10 +26,9 @@ func (r *UserRepository) GetByID(id string) (*user.User, error) {
 
 func (r *UserRepository) GetUserByEmail(email string) (*user.User, error) {
 	var u user.User
-	query := `SELECT id, name, email, created_at, image, role FROM users WHERE email=$1`
+	query := `SELECT id, name, email, createdat, image, role FROM users WHERE email=$1`
 	err := r.DB.QueryRow(query, email).Scan(&u.Id, &u.Name, &u.Email, &u.CreatedAt, &u.Image, &u.Role)
 	if err != nil {
-		println(err)
 		return nil, err
 	}
 	return &u, nil

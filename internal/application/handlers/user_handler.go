@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -59,8 +58,6 @@ func CreateUser(c *gin.Context) {
 		utils.MapDBError(er, c)
 		return
 	}
-
-	fmt.Printf("%+v", u)
 
 	access_token, acc_err := auth.GenerateAccessToken(u.Id)
 	if acc_err != nil {
