@@ -41,7 +41,7 @@ CREATE TABLE property (
     host VARCHAR(255) NOT NULL,
     amenities TEXT[],
     FOREIGN KEY (priceId) REFERENCES prices(id),
-    FOREIGN KEY (sizeId) REFERENCES propertySizes(id)
+    FOREIGN KEY (sizeId) REFERENCES propertySizes(id),
     FOREIGN KEY (host) REFERENCES users(id)
 );
 
